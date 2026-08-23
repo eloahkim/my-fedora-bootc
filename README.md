@@ -2,7 +2,8 @@
 
 Imagem **Fedora Atomic (bootc)** personalizada com **niri** (compositor scrollable-tiling
 Wayland) + **Noctalia v5** (shell), usando **ly** como display manager. Base:
-`quay.io/fedora-ostree-desktops/base-main:44` (Fedora Atomic sem desktop).
+`quay.io/fedora-ostree-desktops/silverblue:44` (Fedora Atomic com GNOME; o GNOME fica
+instalado mas não é usado — o DM é o ly e a sessão é o niri).
 
 Tudo nos repos oficiais do Fedora 44, exceto `rar`/`unrar` (RPM Fusion).
 

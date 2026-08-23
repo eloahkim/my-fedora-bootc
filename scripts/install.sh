@@ -74,6 +74,11 @@ mkdir -p /usr/lib/systemd/system/multi-user.target.wants
 ln -sf ../ly.service /usr/lib/systemd/system/multi-user.target.wants/ly.service
 ln -sf /dev/null "/usr/lib/systemd/system/getty@tty${LY_TTY}.service"
 
+# Desabilita o display manager padrao da silverblue (gdm) para evitar conflito com o ly
+if [ -e /usr/lib/systemd/system/gdm.service ]; then
+  ln -sf /dev/null /usr/lib/systemd/system/gdm.service
+fi
+
 # ---------------------------------------------------------------------------
 # User-units: noctalia + xwayland-satellite, acoplados ao niri.service
 # (assim o shell sobe dentro da sessão niri sem mexer no ~/.config do usuário)

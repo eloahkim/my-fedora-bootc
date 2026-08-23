@@ -1,5 +1,7 @@
 # Fedora Atomic (bootc) image — niri + Noctalia v5
-FROM quay.io/fedora-ostree-desktops/base-main:44
+# silverblue traz toda a plumbing Atomic (NetworkManager, polkit, flatpak, etc.).
+# GNOME fica instalado mas não é usado; o DM é o ly.
+FROM quay.io/fedora-ostree-desktops/silverblue:44
 
 ARG FEDORA_MAJOR_VERSION=44
 ENV FEDORA_MAJOR_VERSION=${FEDORA_MAJOR_VERSION}
