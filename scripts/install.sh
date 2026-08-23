@@ -50,6 +50,9 @@ dnf5 -y install \
   cliphist \
   ddcutil \
   xwayland-satellite \
+  google-noto-fonts-all \
+  jetbrains-mono-fonts \
+  liberation-fonts \
   zip \
   unzip \
   rar \
