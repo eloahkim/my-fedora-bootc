@@ -37,6 +37,7 @@ dnf5 -y install \
   libva-utils \
   vim \
   git \
+  fastfetch \
   ncdu \
   btop \
   rclone \
