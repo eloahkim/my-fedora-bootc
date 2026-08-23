@@ -59,6 +59,12 @@ dnf5 -y install \
   unrar
 
 # ---------------------------------------------------------------------------
+# Flathub (remoto system-wide, como no Silverblue)
+# ---------------------------------------------------------------------------
+XDG_RUNTIME_DIR=/run flatpak remote-add --system --if-not-exists \
+  flathub https://flathub.org/repo/flathub.flatpakrepo
+
+# ---------------------------------------------------------------------------
 # Detecta o binário do Noctalia (v5 = `noctalia`, v4 = `noctalia-shell`)
 # ---------------------------------------------------------------------------
 NOCTALIA_BIN="$(command -v noctalia 2>/dev/null || true)"
