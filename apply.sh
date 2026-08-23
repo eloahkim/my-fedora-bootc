@@ -3,6 +3,14 @@ set -euo pipefail
 
 IMAGE="localhost/fedora-niri-noctalia:44"
 
+# O bootc roda como root e le o storage do sistema. A imagem precisa estar la.
+if ! sudo podman image exists "$IMAGE" 2>/dev/null; then
+  echo "==> Imagem $IMAGE nao encontrada no storage do root."
+  echo "    O build deve ser feito como root (sudo podman build), ou carregue a imagem:"
+  echo "      podman save $IMAGE | sudo podman load"
+  exit 1
+fi
+
 if command -v bootc >/dev/null 2>&1; then
   echo "==> bootc detectado: trocando a imagem base para $IMAGE"
   sudo bootc switch --transport=containers-storage "$IMAGE"

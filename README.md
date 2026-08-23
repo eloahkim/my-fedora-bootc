@@ -31,10 +31,18 @@ sessão niri — sem precisar editar o `~/.config/niri/config.kdl` do usuário.
 
 ## Build (na própria máquina Kinoite)
 
+O build **precisa rodar como root** (`sudo podman`), pois o `bootc switch` (também root)
+só enxerga o storage de sistema (`/var/lib/containers/storage`). O `build.sh` já usa `sudo`.
+
 ```bash
 # transference do repo (git clone / rsync / scp) para a máquina Kinoite, depois:
 cd fedora-niri-noctalia
-./build.sh          # podman build -> localhost/fedora-niri-noctalia:44
+./build.sh          # sudo podman build -> localhost/fedora-niri-noctalia:44
+```
+
+Se por acaso buildar como usuário rootless, carregue a imagem no storage do root antes do apply:
+```bash
+podman save localhost/fedora-niri-noctalia:44 | sudo podman load
 ```
 
 ## Aplicar (switch in-place, sem formatar)
