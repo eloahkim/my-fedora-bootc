@@ -38,6 +38,7 @@ dnf5 -y install \
   vim \
   git \
   fastfetch \
+  distrobox \
   ncdu \
   btop \
   rclone \
