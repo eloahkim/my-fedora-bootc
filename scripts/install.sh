@@ -31,7 +31,6 @@ dnf5 -y install \
   zathura \
   mpv \
   vim \
-  git \
   ncdu \
   btop \
   rclone \

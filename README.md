@@ -11,7 +11,7 @@ Tudo nos repos oficiais do Fedora 44, exceto `rar`/`unrar` (RPM Fusion).
 
 - **Sessão/DM:** `niri`, `noctalia`, `ly`, `xorg-x11-server-Xwayland`
 - **Portais/áudio:** `xdg-desktop-portal` `-gnome` `-gtk`, `pipewire`, `pipewire-pulseaudio`, `wireplumber`
-- **Apps:** `foot`, `imv`, `zathura`, `mpv`, `vim`, `git`, `ncdu`, `btop`, `rclone`, `rsync`, `aria2`, `opus-tools`, `wget`, `efibootmgr`
+- **Apps:** `foot`, `imv`, `zathura`, `mpv`, `vim`, `ncdu`, `btop`, `rclone`, `rsync`, `aria2`, `opus-tools`, `wget`, `efibootmgr` (git fica via toolbox)
 - **Temas/integração:** `adw-gtk3-theme`, `qt6ct`, `libnotify`, `gnome-keyring`, `polkit`, `wl-clipboard`, `cliphist`, `ddcutil`, `xwayland-satellite`
 - **Fontes:** `google-noto-fonts-all` (todas as famílias Noto: emoji, CJK, etc.), `jetbrains-mono-fonts`, `liberation-fonts`
 - **Compactação:** `zip`, `unzip`, `unrar` (RPM Fusion nonfree)
