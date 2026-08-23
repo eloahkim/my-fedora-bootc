@@ -1,4 +1,4 @@
-# Fedora Atomic (bootc) image — niri + Noctalia v5
+# Fedora Atomic (bootc) image — Mango (wl-only) + Noctalia v5
 # fedora-bootc: base mínima oficial da Fedora (sem GNOME/KDE). Instalamos
 # NetworkManager, flatpak e todo o stack de desktop no install.sh.
 FROM quay.io/fedora/fedora-bootc:44

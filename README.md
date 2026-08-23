@@ -1,26 +1,33 @@
-# fedora-niri-noctalia
+# fedora-mango-noctalia
 
-Imagem **Fedora Atomic (bootc)** personalizada com **niri** (compositor scrollable-tiling
-Wayland) + **Noctalia v5** (shell), usando **ly** como display manager. Base:
-`quay.io/fedora/fedora-bootc:44` (base mínima oficial da Fedora, **sem GNOME/KDE**;
-instalamos NetworkManager, flatpak e todo o stack de desktop no `install.sh`).
+Imagem **Fedora Atomic (bootc)** personalizada com **Mango** (compositor Wayland,
+branch `wl-only`) + **Noctalia v5** (shell), usando **ly** como display manager.
+Base: `quay.io/fedora/fedora-bootc:44` (base mínima oficial da Fedora,
+**sem GNOME/KDE**; instalamos NetworkManager, flatpak e todo o stack de desktop
+no `install.sh`).
 
-Tudo nos repos oficiais do Fedora 44, exceto `rar`/`unrar` (RPM Fusion).
+O **Mango** é compilado do fonte (branch `wl-only`, commit fixo para
+reprodutibilidade) dentro do Containerfile. O **wlroots 0.20** vem do próprio
+pacote Fedora (`wlroots-devel` 0.20.2), e **não** compilamos `scenefx` (ausente
+como dependência neste branch). Xwayland é nativo do Mango (build com xwayland
+habilitado).
 
 ## O que a imagem traz
 
-- **Sessão/DM:** `niri`, `noctalia`, `ly`, `xorg-x11-server-Xwayland`
-- **Portais/áudio:** `xdg-desktop-portal` `-gnome` `-gtk`, `pipewire`, `pipewire-pulseaudio`, `wireplumber`
+- **Sessão/DM:** `mango` (compilado do fonte), `noctalia`, `ly`, `xorg-x11-server-Xwayland`
+- **Portais/áudio:** `xdg-desktop-portal`, `xdg-desktop-portal-wlr`, `xdg-desktop-portal-gtk`, `pipewire`, `pipewire-pulseaudio`, `wireplumber`
 - **Apps:** `foot`, `imv`, `zathura`, `mpv`, `vim`, `git`, `ncdu`, `btop`, `rclone`, `rsync`, `aria2`, `opus-tools`, `wget`, `efibootmgr`
 - **Aceleração de vídeo (VA-API, AMD/Intel):** `mesa-va-drivers-freeworld`, `intel-media-driver`, `libva-utils` (RPM Fusion free) — decode por hardware de h264/h265/VP9/AV1
 - **Flatpak:** `flatpak` instalado e remoto **Flathub** pré-configurado (system-wide)
-- **Temas/integração:** `adw-gtk3-theme`, `qt6ct`, `libnotify`, `gnome-keyring`, `polkit`, `wl-clipboard`, `cliphist`, `ddcutil`, `xwayland-satellite`
+- **Temas/integração:** `adw-gtk3-theme`, `qt6ct`, `libnotify`, `gnome-keyring`, `polkit`, `wl-clipboard`, `cliphist`, `ddcutil`
 - **Fontes:** `google-noto-fonts-all` (todas as famílias Noto: emoji, CJK, etc.), `jetbrains-mono-fonts`, `liberation-fonts`
 - **Compactação:** `zip`, `unzip`, `unrar` (RPM Fusion nonfree)
 
-O **Noctalia** e o **xwayland-satellite** sobem como *user-units* acoplados ao
-`niri.service` (criados no `install.sh`), então o shell inicia sozinho dentro da
-sessão niri — sem precisar editar o `~/.config/niri/config.kdl` do usuário.
+O **Noctalia** sobe via `exec-once=noctalia` no config default do Mango
+(`/usr/etc/mango/config.conf`, que vira `/etc/mango/config.conf` no boot). Um
+wrapper (`/usr/bin/mango-session`) garante que usuários já existentes recebam o
+config default no primeiro login. Não usamos user-units do systemd (método
+deprecated na v5).
 
 ## Pré-requisitos na máquina alvo (Kinoite)
 
@@ -37,25 +44,29 @@ só enxerga o storage de sistema (`/var/lib/containers/storage`). O `build.sh` j
 
 ```bash
 # transference do repo (git clone / rsync / scp) para a máquina Kinoite, depois:
-cd fedora-niri-noctalia
-./build.sh          # sudo podman build -> localhost/fedora-niri-noctalia:44
+cd fedora-mango-noctalia
+./build.sh          # sudo podman build -> localhost/fedora-mango-noctalia:44
 ```
 
 Se por acaso buildar como usuário rootless, carregue a imagem no storage do root antes do apply:
 ```bash
-podman save localhost/fedora-niri-noctalia:44 | sudo podman load
+podman save localhost/fedora-mango-noctalia:44 | sudo podman load
 ```
+
+O build compila o Mango a partir do commit fixo `3a2c396c425236a512fd8babb241973f364c86d6`
+(branch `wl-only`). O `wlroots-devel` 0.20.2 é usado direto do Fedora — não há
+compilação de wlroots.
 
 ## Aplicar (switch in-place, sem formatar)
 
 ```bash
 ./apply.sh
 # ou, manualmente:
-sudo bootc switch --transport=containers-storage localhost/fedora-niri-noctalia:44
+sudo bootc switch --transport=containers-storage localhost/fedora-mango-noctalia:44
 systemctl reboot
 ```
 
-No primeiro boot aparece o **ly**; escolha a sessão **niri**. O Noctalia sobe
+No primeiro boot aparece o **ly**; escolha a sessão **Mango**. O Noctalia sobe
 automaticamente. `/home` e `/var` (incluindo flatpaks do Kinoite) são preservados;
 o deployment antigo do Kinoite vira um entry de fallback no GRUB.
 
@@ -67,9 +78,9 @@ sudo rpm-ostree install bootc && systemctl reboot
 ```
 Ou, sem instalar bootc, faça push para um registry e rebase:
 ```bash
-podman tag localhost/fedora-niri-noctalia:44 ghcr.io/<user>/fedora-niri-noctalia:44
-podman push ghcr.io/<user>/fedora-niri-noctalia:44
-sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/<user>/fedora-niri-noctalia:44
+podman tag localhost/fedora-mango-noctalia:44 ghcr.io/<user>/fedora-mango-noctalia:44
+podman push ghcr.io/<user>/fedora-mango-noctalia:44
+sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/<user>/fedora-mango-noctalia:44
 ```
 
 ## Rollback
@@ -77,66 +88,31 @@ sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/<user>/fedora-niri-noc
 - No GRUB, selecione o deployment anterior (Kinoite), ou:
 - `sudo bootc rollback` / `sudo rpm-ostree rollback`
 
+A versão anterior com **niri** está preservada no branch `niri` deste repo.
+
 ## Atualizações
 
-Rebuild local + `sudo bootc switch localhost/fedora-niri-noctalia:44` (ou `bootc upgrade`
+Rebuild local + `sudo bootc switch localhost/fedora-mango-noctalia:44` (ou `bootc upgrade`
 se estiver trackando um registry). Nada de `rpm-ostree upgrade` no deployment custom.
 
-## (Opcional) Configuração fina do niri para o Noctalia
+## Configuração fina do Mango para o Noctalia
 
-A autostart já é feita via systemd — **não** adicione `spawn-at-startup "noctalia"`
-no config (senão o shell sobe duas vezes). Para os ajustes visuais/teclas do Noctalia,
-adicione ao seu `~/.config/niri/config.kdl` (substitui os defaults do niri, então
-mantenha também seus binds preferidos):
+O autostart e os IPC binds já vêm no config default da imagem
+(`/etc/mango/config.conf`). Para ajustar, edite `~/.config/mango/config.conf`
+(copiado do default no primeiro login). Referência oficial:
+https://docs.noctalia.dev/v5/compositor-settings/mango/
 
-```kdl
-// Cantos arredondados + janela de settings do Noctalia flutuando
-window-rule {
-  geometry-corner-radius 20
-  clip-to-geometry true
-}
-window-rule {
-  match app-id="dev.noctalia.Noctalia"
-  open-floating true
-  default-column-width { fixed 1080; }
-  default-window-height { fixed 920; }
-}
-
-debug {
-  honor-xdg-activation-with-invalid-serial
-}
-
-binds {
-  Mod+Space { spawn-sh "noctalia msg panel-toggle launcher"; }
-  Mod+S     { spawn-sh "noctalia msg panel-toggle control-center"; }
-  Mod+Comma { spawn-sh "noctalia msg settings-toggle"; }
-  Alt+Tab   { spawn-sh "noctalia msg window-switcher"; }
-  XF86AudioRaiseVolume { spawn-sh "noctalia msg volume-up"; }
-  XF86AudioLowerVolume { spawn-sh "noctalia msg volume-down"; }
-  XF86AudioMute        { spawn-sh "noctalia msg volume-mute"; }
-  XF86MonBrightnessUp   { spawn-sh "noctalia msg brightness-up"; }
-  XF86MonBrightnessDown { spawn-sh "noctalia msg brightness-down"; }
-}
-
-// Blur (requer niri >= 26.04; vem no Fedora 44)
-window-rule {
-  background-effect { blur true; xray false; }
-}
-layer-rule {
-  match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"
-  background-effect { xray false; }
-}
-layer-rule {
-  match namespace="noctalia-window-switcher"
-  background-effect { blur true; xray false; }
-}
-blur { passes 2; offset 3.0; noise 0.03; saturation 1.0; }
-
-// Wallpaper backdrop (visível no overview)
-layer-rule {
-  match namespace="^noctalia-backdrop"
-  place-within-backdrop true
-}
+Trecho relevante já embutido:
+```ini
+exec-once=noctalia
+bind=SUPER,space,spawn,noctalia msg panel-toggle launcher
+bind=SUPER,s,spawn,noctalia msg panel-toggle control-center
+bind=SUPER,comma,spawn,noctalia msg settings-toggle
+bind=NONE,XF86AudioRaiseVolume,spawn,noctalia msg volume-up
+bind=NONE,XF86AudioLowerVolume,spawn,noctalia msg volume-down
+bind=NONE,XF86AudioMute,spawn,noctalia msg volume-mute
+bind=NONE,XF86MonBrightnessUp,spawn,noctalia msg brightness-up
+bind=NONE,XF86MonBrightnessDown,spawn,noctalia msg brightness-down
 ```
 
 ## Troubleshooting
@@ -150,6 +126,9 @@ layer-rule {
 - **Laptop (lid/suspend):** o Noctalia trava a tela antes de suspender por padrão.
   Ajuste em `[lockscreen]` na config do Noctalia e, se necessário, `HandleLidSwitch=ignore`
   em `/etc/systemd/logind.conf`.
+- **wlroots-0.20.pc ausente:** se o `wlroots-devel` do Fedora não expuser o
+  `wlroots-0.20.pc`, o build do Mango falha. Nesse caso, compilar o wlroots 0.20.2
+  do fonte antes do Mango (ajustar `install.sh`).
 
 ## Testar em VM antes de aplicar na máquina real
 
@@ -161,7 +140,7 @@ podman run --rm -it \
   -v ./:/workspace:ro \
   -v ./out:/output \
   quay.io/centos-bootc/bootc-image-builder:latest \
-  --type qcow2 localhost/fedora-niri-noctalia:44
+  --type qcow2 localhost/fedora-mango-noctalia:44
 ```
 
 Depois abra o `out/*.qcow2` no virt-manager/QEMU.
