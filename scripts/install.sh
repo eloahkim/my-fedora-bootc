@@ -30,6 +30,9 @@ dnf5 -y install \
   imv \
   zathura \
   mpv \
+  mesa-va-drivers-freeworld \
+  intel-media-driver \
+  libva-utils \
   vim \
   ncdu \
   btop \
