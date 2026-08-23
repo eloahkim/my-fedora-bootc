@@ -18,6 +18,8 @@ dnf5 -y install \
   noctalia \
   ly \
   xorg-x11-server-Xwayland \
+  NetworkManager \
+  flatpak \
   xdg-desktop-portal \
   xdg-desktop-portal-gnome \
   xdg-desktop-portal-gtk \
