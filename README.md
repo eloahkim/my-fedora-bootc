@@ -11,7 +11,7 @@ Tudo nos repos oficiais do Fedora 44, exceto `rar`/`unrar` (RPM Fusion).
 
 - **Sessão/DM:** `niri`, `noctalia`, `ly`, `xorg-x11-server-Xwayland`
 - **Portais/áudio:** `xdg-desktop-portal` `-gnome` `-gtk`, `pipewire`, `pipewire-pulseaudio`, `wireplumber`
-- **Apps:** `foot`, `imv`, `zathura`, `mpv`, `vim`, `ncdu`, `btop`, `rclone`, `rsync`, `aria2`, `opus-tools`, `wget`, `efibootmgr` (git fica via toolbox)
+- **Apps:** `foot`, `imv`, `zathura`, `mpv`, `vim`, `git`, `ncdu`, `btop`, `rclone`, `rsync`, `aria2`, `opus-tools`, `wget`, `efibootmgr`
 - **Aceleração de vídeo (VA-API, AMD/Intel):** `mesa-va-drivers-freeworld`, `intel-media-driver`, `libva-utils` (RPM Fusion free) — decode por hardware de h264/h265/VP9/AV1
 - **Flatpak:** `flatpak` instalado e remoto **Flathub** pré-configurado (system-wide)
 - **Temas/integração:** `adw-gtk3-theme`, `qt6ct`, `libnotify`, `gnome-keyring`, `polkit`, `wl-clipboard`, `cliphist`, `ddcutil`, `xwayland-satellite`

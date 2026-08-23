@@ -34,6 +34,7 @@ dnf5 -y install \
   intel-media-driver \
   libva-utils \
   vim \
+  git \
   ncdu \
   btop \
   rclone \
