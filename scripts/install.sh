@@ -147,21 +147,21 @@ XDG_RUNTIME_DIR=/run flatpak remote-add --system --if-not-exists \
   flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # ---------------------------------------------------------------------------
-# ly: habilita e mascara o getty do tty que o ly ocupa
+# ly: habilita o servico template ly@tty2 (o ly nao tem unidade ly.service;
+# e' um template ly@.service com TTYPath=/dev/%I). ly conflicta com getty no
+# mesmo tty, mas mascaramos mesmo assim por seguranca.
 # ---------------------------------------------------------------------------
-LY_UNIT="$(rpm -ql ly 2>/dev/null | grep -m1 'systemd/system/ly.service$' || true)"
-LY_UNIT="${LY_UNIT:-/usr/lib/systemd/system/ly.service}"
-LY_TTY="$(grep -m1 '^TTYPath=' "$LY_UNIT" 2>/dev/null | sed 's#.*/tty##' || true)"
-LY_TTY="${LY_TTY:-2}"
+LY_TTY=2
 
 mkdir -p /usr/lib/systemd/system/multi-user.target.wants
-ln -sf ../ly.service /usr/lib/systemd/system/multi-user.target.wants/ly.service
+ln -sf ../ly@.service "/usr/lib/systemd/system/multi-user.target.wants/ly@tty${LY_TTY}.service"
 ln -sf /dev/null "/usr/lib/systemd/system/getty@tty${LY_TTY}.service"
 
-# Desabilita o display manager padrao da silverblue (gdm) para evitar conflito com o ly
-if [ -e /usr/lib/systemd/system/gdm.service ]; then
-  ln -sf /dev/null /usr/lib/systemd/system/gdm.service
-fi
+# Mascara DMs que possam conflitar (gdm da silverblue; sddm pode sobrar no
+# /etc entre deployments bootc e quebrar o display-manager.target).
+for dm in gdm sddm; do
+  ln -sf /dev/null "/usr/lib/systemd/system/${dm}.service"
+done
 
 # ---------------------------------------------------------------------------
 # Noctalia v5: o autostart é feito via `exec-once=noctalia` no config do Mango
