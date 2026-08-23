@@ -120,4 +120,4 @@ UNIT
 ln -sf ../xwayland-satellite.service /usr/lib/systemd/user/niri.service.wants/xwayland-satellite.service
 
 dnf5 -y clean all
-rm -rf /var/cache/dnf /var/lib/dnf /tmp/*
+rm -rf /tmp/*
