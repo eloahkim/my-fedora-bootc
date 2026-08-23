@@ -41,7 +41,6 @@ dnf5 -y install \
   wget \
   efibootmgr \
   adw-gtk3-theme \
-  gnome-themes-extra \
   qt6ct \
   libnotify \
   gnome-keyring \
