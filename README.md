@@ -14,7 +14,7 @@ Tudo nos repos oficiais do Fedora 44, exceto `rar`/`unrar` (RPM Fusion).
 - **Apps:** `foot`, `imv`, `zathura`, `mpv`, `vim`, `git`, `ncdu`, `btop`, `rclone`, `rsync`, `aria2`, `opus-tools`, `wget`, `efibootmgr`
 - **Temas/integração:** `adw-gtk3-theme`, `gnome-themes-extra`, `qt6ct`, `libnotify`, `gnome-keyring`, `polkit`, `wl-clipboard`, `cliphist`, `ddcutil`, `xwayland-satellite`
 - **Fontes:** `google-noto-fonts-all` (todas as famílias Noto: emoji, CJK, etc.), `jetbrains-mono-fonts`, `liberation-fonts`
-- **Compactação:** `zip`, `unzip`, `rar`, `unrar` (RPM Fusion free/nonfree)
+- **Compactação:** `zip`, `unzip`, `unrar` (RPM Fusion nonfree)
 
 O **Noctalia** e o **xwayland-satellite** sobem como *user-units* acoplados ao
 `niri.service` (criados no `install.sh`), então o shell inicia sozinho dentro da
