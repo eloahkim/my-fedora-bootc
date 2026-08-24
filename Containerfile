@@ -1,7 +1,8 @@
 # Fedora Atomic (bootc) image — Mango (wl-only) + Noctalia v5
-# fedora-bootc: base mínima oficial da Fedora (sem GNOME/KDE). Instalamos
-# NetworkManager, flatpak e todo o stack de desktop no install.sh.
-FROM quay.io/fedora/fedora-bootc:44
+# base-main: base mínima da Universal Blue (sem GNOME/KDE, built sobre o
+# fedora-bootc). Instalamos NetworkManager, flatpak e o stack de desktop
+# no install.sh.
+FROM ghcr.io/ublue-os/base-main:44
 
 ARG FEDORA_MAJOR_VERSION=44
 ENV FEDORA_MAJOR_VERSION=${FEDORA_MAJOR_VERSION}

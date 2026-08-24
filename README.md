@@ -2,9 +2,10 @@
 
 Imagem **Fedora Atomic (bootc)** personalizada com **Mango** (compositor Wayland,
 branch `wl-only`) + **Noctalia v5** (shell), usando **ly** como display manager.
-Base: `quay.io/fedora/fedora-bootc:44` (base mínima oficial da Fedora,
-**sem GNOME/KDE**; instalamos NetworkManager, flatpak e todo o stack de desktop
-no `install.sh`).
+Base: `ghcr.io/ublue-os/base-main:44` (base mínima da **Universal Blue**, sem
+GNOME/KDE; instalamos NetworkManager, flatpak e todo o stack de desktop
+no `install.sh`). A ublue traz de bônus `just`, regras udev e timers de
+atualização automática de flatpaks (system + user).
 
 O **Mango** é compilado do fonte (branch `wl-only`, commit fixo para
 reprodutibilidade) dentro do Containerfile. O **wlroots 0.20** vem do próprio
